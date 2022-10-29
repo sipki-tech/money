@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/envoyproxy/protoc-gen-validate v0.6.13
-	github.com/sipki-tech/currency v0.1.1
+	github.com/sipki-tech/currency v0.1.2
 	google.golang.org/protobuf v1.28.1
 )
 

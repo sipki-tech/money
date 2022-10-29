@@ -138,8 +138,8 @@ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
 github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
-github.com/sipki-tech/currency v0.1.1 h1:HCkXx34mhxF9+FcIf+IN+IGbY6nn1asfGeCVRGl1MNY=
-github.com/sipki-tech/currency v0.1.1/go.mod h1:Xte+HQL6ErfjheEwCIKoWldMXJRSjR60wvteEykrGdI=
+github.com/sipki-tech/currency v0.1.2 h1:O6oBIFHbi6CdFLGeuMJ5HaTwV2QQK8uefC9yIgSBsuQ=
+github.com/sipki-tech/currency v0.1.2/go.mod h1:Xte+HQL6ErfjheEwCIKoWldMXJRSjR60wvteEykrGdI=
 github.com/spf13/afero v1.3.3/go.mod h1:5KUK8ByomD5Ti5Artl0RtHeI5pTF7MIDuXL3yY520V4=
 github.com/spf13/afero v1.9.2/go.mod h1:iUV7ddyEEZPO5gA3zD4fJt6iStLlL+Lg4m2cihcDf8Y=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
