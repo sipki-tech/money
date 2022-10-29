@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package money.v1;
+
+import "currency/v1/currency.proto";
+import "google/type/decimal.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/sipki-tech/money/money/v1;moneypb";
+
+// Represents decimal value.
+message Decimal {
+  string value = 1 [(validate.rules).string = {pattern: "[+-]?([0-9]*[.])?[0-9]+"}];
+}
+
+// Represents as fiat money type.
+message Fiat {
+  // Defined as ISO 4217.
+  currency.v1.Code currency_code = 1 [(validate.rules).enum = {
+    defined_only: true,
+    not_in: [0]
+  }];
+
+  Decimal decimal = 2 [(validate.rules).message = {required: true}];
+}
