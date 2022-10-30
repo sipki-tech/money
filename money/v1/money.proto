@@ -8,18 +8,34 @@ import "validate/validate.proto";
 
 option go_package = "github.com/sipki-tech/money/money/v1;moneypb";
 
+// Money type.
+enum Type {
+  // For unknown value.
+  // Can't be anyway.
+  TYPE_UNSPECIFIED = 0;
+  // Fiat money.
+  TYPE_FIAT = 1;
+  // Crypto money.
+  TYPE_CRYPTO = 2;
+}
+
 // Represents decimal value.
 message Decimal {
   string value = 1 [(validate.rules).string = {pattern: "[+-]?([0-9]*[.])?[0-9]+"}];
 }
 
-// Represents as fiat money type.
-message Fiat {
-  // Defined as ISO 4217.
+// Represents as money type.
+message Money {
+  // Defined as ISO 4217 for fiat currency.
   currency.v1.Code currency_code = 1 [(validate.rules).enum = {
     defined_only: true,
     not_in: [0]
   }];
 
   Decimal decimal = 2 [(validate.rules).message = {required: true}];
+
+  Type type = 3 [(validate.rules).enum = {
+    defined_only: true,
+    not_in: [0]
+  }];
 }

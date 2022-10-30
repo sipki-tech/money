@@ -5,8 +5,19 @@ import (
 	"github.com/sipki-tech/currency"
 )
 
-// Fiat represent fiat money.
-type Fiat struct {
+// Type for money.
+type Type uint8
+
+// Type enum.
+const (
+	_ Type = iota
+	Fiat
+	Crypto
+)
+
+// Money represent fiat money.
+type Money struct {
 	Code    currency.Code
 	Decimal decimal.Decimal
+	Type    Type
 }

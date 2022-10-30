@@ -150,29 +150,29 @@ var _ interface {
 
 var _Decimal_Value_Pattern = regexp.MustCompile("[+-]?([0-9]*[.])?[0-9]+")
 
-// Validate checks the field values on Fiat with the rules defined in the proto
-// definition for this message. If any rules are violated, the first error
-// encountered is returned, or nil if there are no violations.
-func (m *Fiat) Validate() error {
+// Validate checks the field values on Money with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Money) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Fiat with the rules defined in the
+// ValidateAll checks the field values on Money with the rules defined in the
 // proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in FiatMultiError, or nil if none found.
-func (m *Fiat) ValidateAll() error {
+// a list of violation errors wrapped in MoneyMultiError, or nil if none found.
+func (m *Money) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Fiat) validate(all bool) error {
+func (m *Money) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	if _, ok := _Fiat_CurrencyCode_NotInLookup[m.GetCurrencyCode()]; ok {
-		err := FiatValidationError{
+	if _, ok := _Money_CurrencyCode_NotInLookup[m.GetCurrencyCode()]; ok {
+		err := MoneyValidationError{
 			field:  "CurrencyCode",
 			reason: "value must not be in list [0]",
 		}
@@ -183,7 +183,7 @@ func (m *Fiat) validate(all bool) error {
 	}
 
 	if _, ok := currencypb.Code_name[int32(m.GetCurrencyCode())]; !ok {
-		err := FiatValidationError{
+		err := MoneyValidationError{
 			field:  "CurrencyCode",
 			reason: "value must be one of the defined enum values",
 		}
@@ -194,7 +194,7 @@ func (m *Fiat) validate(all bool) error {
 	}
 
 	if m.GetDecimal() == nil {
-		err := FiatValidationError{
+		err := MoneyValidationError{
 			field:  "Decimal",
 			reason: "value is required",
 		}
@@ -208,7 +208,7 @@ func (m *Fiat) validate(all bool) error {
 		switch v := interface{}(m.GetDecimal()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, FiatValidationError{
+				errors = append(errors, MoneyValidationError{
 					field:  "Decimal",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -216,7 +216,7 @@ func (m *Fiat) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, FiatValidationError{
+				errors = append(errors, MoneyValidationError{
 					field:  "Decimal",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -225,7 +225,7 @@ func (m *Fiat) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetDecimal()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return FiatValidationError{
+			return MoneyValidationError{
 				field:  "Decimal",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -233,19 +233,41 @@ func (m *Fiat) validate(all bool) error {
 		}
 	}
 
+	if _, ok := _Money_Type_NotInLookup[m.GetType()]; ok {
+		err := MoneyValidationError{
+			field:  "Type",
+			reason: "value must not be in list [0]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if _, ok := Type_name[int32(m.GetType())]; !ok {
+		err := MoneyValidationError{
+			field:  "Type",
+			reason: "value must be one of the defined enum values",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if len(errors) > 0 {
-		return FiatMultiError(errors)
+		return MoneyMultiError(errors)
 	}
 
 	return nil
 }
 
-// FiatMultiError is an error wrapping multiple validation errors returned by
-// Fiat.ValidateAll() if the designated constraints aren't met.
-type FiatMultiError []error
+// MoneyMultiError is an error wrapping multiple validation errors returned by
+// Money.ValidateAll() if the designated constraints aren't met.
+type MoneyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m FiatMultiError) Error() string {
+func (m MoneyMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -254,11 +276,11 @@ func (m FiatMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m FiatMultiError) AllErrors() []error { return m }
+func (m MoneyMultiError) AllErrors() []error { return m }
 
-// FiatValidationError is the validation error returned by Fiat.Validate if the
-// designated constraints aren't met.
-type FiatValidationError struct {
+// MoneyValidationError is the validation error returned by Money.Validate if
+// the designated constraints aren't met.
+type MoneyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -266,22 +288,22 @@ type FiatValidationError struct {
 }
 
 // Field function returns field value.
-func (e FiatValidationError) Field() string { return e.field }
+func (e MoneyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e FiatValidationError) Reason() string { return e.reason }
+func (e MoneyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e FiatValidationError) Cause() error { return e.cause }
+func (e MoneyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e FiatValidationError) Key() bool { return e.key }
+func (e MoneyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e FiatValidationError) ErrorName() string { return "FiatValidationError" }
+func (e MoneyValidationError) ErrorName() string { return "MoneyValidationError" }
 
 // Error satisfies the builtin error interface
-func (e FiatValidationError) Error() string {
+func (e MoneyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -293,14 +315,14 @@ func (e FiatValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sFiat.%s: %s%s",
+		"invalid %sMoney.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = FiatValidationError{}
+var _ error = MoneyValidationError{}
 
 var _ interface {
 	Field() string
@@ -308,8 +330,12 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = FiatValidationError{}
+} = MoneyValidationError{}
 
-var _Fiat_CurrencyCode_NotInLookup = map[currencypb.Code]struct{}{
+var _Money_CurrencyCode_NotInLookup = map[currencypb.Code]struct{}{
+	0: {},
+}
+
+var _Money_Type_NotInLookup = map[Type]struct{}{
 	0: {},
 }
