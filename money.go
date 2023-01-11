@@ -9,6 +9,8 @@ import (
 type Type uint8
 
 // Type enum.
+//
+//go:generate stringer -output=stringer.Type.go -type=Type
 const (
 	_ Type = iota
 	Fiat
